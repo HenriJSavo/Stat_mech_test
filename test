@@ -1,0 +1,14 @@
+import numpy as np
+import matplotlib.pyplot as plt
+size = 10
+occupant_fraction =0.2
+
+
+def start_grid(length, fraction):
+    lattice = np.zeros((length,length))
+    number_occupants = occupant_fraction*length**2
+    for i in range(length):
+        lattice[i]=np.random.choice([0, 1], length, p=[1-fraction,fraction])
+    return lattice
+    
+print(start_grid(size,occupant_fraction))
