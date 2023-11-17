@@ -1,8 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 size = 10
 occupant_fraction =0.2
-
+price = 0
 
 def start_grid(length, fraction):
     lattice = np.zeros((length,length))
@@ -12,3 +13,33 @@ def start_grid(length, fraction):
     return lattice
     
 print(start_grid(size,occupant_fraction))
+
+def bool_prob(probability):
+    random_number = random.random()
+    if random_number > probability:
+        return False
+    else:
+        return True
+    
+def activity(clusters, p_a):
+    actives = []
+    for i in clusters:
+        if bool_prob(2*p_a):
+            actives.append(i)
+    return actives
+
+def buy_sell(actives,p_b):
+    buyers = []
+    sellers = []
+    for i in actives:
+        if bool_prob(p_b):
+            buyers.append(i)
+        else:
+            sellers.append(i)
+    return buyers, sellers
+
+def actu_price(buyers, sellers, price):
+    for i in buyers:
+        price += i
+    for i in sellers:
+        price -= i
