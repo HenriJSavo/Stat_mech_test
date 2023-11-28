@@ -1,14 +1,43 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from skimage.measure import label
+
+#given parameters
 size = 10
 occupant_fraction =0.2
 
-
-def start_grid(length, fraction):
+#generate the lattice
+def gen_grid(length, fraction):
     lattice = np.zeros((length,length))
     number_occupants = occupant_fraction*length**2
     for i in range(length):
         lattice[i]=np.random.choice([0, 1], length, p=[1-fraction,fraction])
     return lattice
-    
-print(start_grid(size,occupant_fraction))
+
+#count the size of cluster
+def clusters_getsize(lattice,length):
+
+    label_lattice = label(lattice)
+    oneD_label_lattice=label_lattice.ravel()
+    cluster_max= np.max(oneD_label_lattice)
+    print(cluster_max)
+    cluster_sizes= np.zeros((cluster_max,1))
+    cluster_sizes = [0]*cluster_max
+    for i in range(1,cluster_max+1):
+        for j in range(len(label_lattice)):
+            for k in range(len(label_lattice)):
+                if label_lattice[j][k] == i:
+                    cluster_sizes[i-1] = cluster_sizes[i-1]+1
+
+    return label_lattice, cluster_max, cluster_sizes
+
+#plot the lattice
+test = gen_grid(size, occupant_fraction)
+print(test)
+print(label(test))
+
+plt.imshow(test)
+plt.show()
+
+lattice_label, cluster_max,sizes_cluster = clusters_getsize(test,size)
+print(sizes_cluster)
